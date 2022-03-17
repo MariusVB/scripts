@@ -21,8 +21,7 @@
 # =========================================================================== #
 #            FIX:  MiAl (HackWare.ru)                                         #
 # =========================================================================== #
-# =========================================================================== #
-#            FIX:  Wehuu                                          #
+#            FIX:  Wehuu                                                      #
 # =========================================================================== #
 
 
@@ -40,6 +39,7 @@ macaddress="$(ip -0 addr show dev "$interface" \
               | awk '/link/ && /ether/ {print $2}' \
               | tr '[:upper:]' '[:lower:]')"
 
+sipcalc=$(which sipcalc)
 
 # Check for running as root.
 function check_sudo() {
@@ -80,7 +80,7 @@ function reset_interface() {
 function calc_network() {
   printf "%b\n" "Exploring network n \"$wifissid\" Wi-Fi hotspot."
   if [[ "$netmask" -lt 24 ]]; then
-    /usr/local/bin/sipcalc -s 24 "$network" \
+    $sipcalc -s 24 "$network" \
     | awk '/Network/ {print $3}' > "$tmp"/networklist.$$.txt
     printf "%b\n" "Splitting up network $network into smaller chunks."
   else
