@@ -1,3 +1,18 @@
+function wg-up
+  sudo systemctl start wg-quick@wg0
+end
+
+function wg-down
+  sudo systemctl stop wg-quick@wg0
+end
+
+function nmc
+  nmcli d w c $argv[1] password $argv[2]
+end
+
+function nml
+  nmcli d w l
+end
 
 
 function charconvert

@@ -93,15 +93,17 @@ routermac="$(nmap -n -sn -PR -PS -PA -PU -T5 $gateway | grep -E -o '[A-Z0-9:]{17
 # Select network, set netmask, scan it for IP and MAC and hijack them. Repeat.
 function main() {
   while read -r networkfromlist; do
+    echo $networkfromlist
     if [[ "$netmask" -lt 24 ]]; then
       network="$networkfromlist/24"
     else
       network="$networkfromlist/$netmask"
     fi
-
+  
+  network="10.227.254.0/24"
   # Scan selected network for active hosts.
   printf "%b\n" "Looking for active hosts in $network. Please wait."
-  nmap -n -sn -PR -PS -PA -PU -T5 --exclude "$localip","$gateway" "$network" \
+  nmap -n -sn -PR -PS -PA -PU -T5 --exclude "$localip","$gateway" $network \
   | awk '/for/ {print $5} ; /Address/ {print $3}' \
   | sed '$!N;s/\n/ - /' > "$tmp"/hostsalive.$$.txt
 
