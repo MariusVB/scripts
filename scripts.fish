@@ -7,7 +7,11 @@ function wg-down
 end
 
 function nmc
-  nmcli d w c $argv[1] password $argv[2]
+    if not set -q argv[2]
+        nmcli d w c $argv[1]
+    else
+        nmcli d w c $argv[1] password $argv[2]
+    end
 end
 
 function nml
@@ -18,7 +22,7 @@ end
 function charconvert
     gzip -c $argv[1] > index
 
-    /home/marius/Documents/packages/FileToArray/filetoarray index > compressed_$argv[1].h
+    ~/Documents/packages/FileToArray/filetoarray index > compressed_$argv[1].h
 
     rm index
 
@@ -55,13 +59,21 @@ function cat
 end
 
 function gitc
-    git add .
     git commit -m $argv
     git push
 end
 
 function gitp
     git pull --ff-only
+end
+
+function gp
+    git push
+end
+
+function edit-fish
+    code ~/Documents/scripts/scripts.fish
+    code ~/.config/fish/config.fish
 end
 
 function ls
